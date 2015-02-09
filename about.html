@@ -1,0 +1,15 @@
+---
+layout: page
+title: About
+permalink: /about/
+---
+
+{% if site.theme.gravatar %}
+<a href="{{ site.baseurl }}/">
+  <img class="avatar" src="https://secure.gravatar.com/avatar/{{ site.theme.gravatar }}?s=100" alt=""/>
+</a>
+{% else if site.theme.avatar %}
+<a href="{{ site.baseurl }}/">
+  <img class="avatar" src="/img/{{ site.theme.avatar }}" alt=""/>
+</a>
+{% endif %}

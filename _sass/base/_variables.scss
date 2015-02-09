@@ -1,29 +1,35 @@
 // typography
-$font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
-$font-size: 1.25em;
+//$font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+$font-family: "PT Serif", "Georgia", "Helvitica Neue", sans-serif;
+$font-size: 1.15em;
 
 // padding
 $padding-large: 20%;
 $padding-small: 5%;
-$padding-x-small: 3%;
+$padding-x-small: 2%;
 
 // brand colors
-$brand-color: #fff;
+$brand-color: #C63D0F;
 $background-color: #fff;
 $border-color: rgba(0, 0, 0, 0.1); // rgba recommended if using feature images
+$post-border-color: rgba(0, 0, 0, 0.5);
+
+// nav bar colors
+$navbar-background-color: #383838;
+$navbar-text-color: #FFF;
 
 // typography colors
 $text-color: #383838;
-$link-color: #1ABC9C;
+$link-color: #D44110;
 $selection-color: #D4D4D4; // visible when highlighting text
 
 // header colors
-$header-link-color: #383838;
+$header-link-color: #FFF;
 
 // feature image for articles
 $feature-image-text-color: #fff;
 $feature-image-size: cover; // options include "cover", "contain", "auto"
 
 // header description box
-$header-desc-background-color: #F98752; 
+$header-desc-background-color: #C63D0F;
 $header-desc-text-color: #FFF;

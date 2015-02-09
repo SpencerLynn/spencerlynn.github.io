@@ -1,53 +1,141 @@
 .site-header {
   @extend %padding-small;
   background: $brand-color;
-  border-bottom: 1px solid $border-color;
   display: inline-block;
   float: left;
   width: 100%;
-  
+
+  text-align: center;
+
   a {
     color: $header-link-color;
   }
-  
-  .avatar {
-    height: 2em;
-    width: 2em;
-    float: left;
-    margin-top: -3px;
-    border-radius: 0.2em;
-    margin-right: 1em;
-  }
-  
   .site-title {
     float: left;
-    font-weight: bold;
-    font-size: 1em;
+    font-weight: normal;
+    font-size: 2.5em;
     line-height: 1.5;
+
+    width: 100%;
   }
 
-  .site-nav {
+  .site-icons {
+    width: 100%;
+
     ul {
       margin: 0;
       padding: 0;
       list-style: none;
       line-height: 1.5;
-      float: right;
-      text-align: right;
     }
     li {
       display: inline;
-      float: left;
       margin-right: 0.4em;
     }
     @media (max-width: 1100px) {
       ul {
         display: inline-block;
         float: left;
-        padding-top: $padding-small;
-        text-align: left;
         width: 100%;
-      } 
+      }
+    }
+
+    a {
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      -ms-border-radius: 50%;
+      -o-border-radius: 50%;
+      border-radius: 50%;
+      display: -moz-inline-stack;
+      display: inline-block;
+      vertical-align: middle;
+      *vertical-align: auto;
+      zoom: 1;
+      *display: inline;
+      text-indent: -9999px;
+      margin: 0px 0px 0px 0px;
+      opacity: 0.5;
+      width: 28px;
+      height: 28px;
+      -webkit-transition: 0.3s;
+      -moz-transition: 0.3s;
+      -o-transition: 0.3s;
+      transition: 0.3s;
+    }
+
+    a.social:hover { opacity: 1 }
+
+    a.github {
+      background: url('/assets/social/github.png') center no-repeat #afb6ca;
+      border: 1px solid #afb6ca;
+    }
+    a.github:hover { border: 1px solid #909ab6 }
+
+    a.twitter {
+      background: url('/assets/social/twitter.png') center no-repeat #55cff8;
+      border: 1px solid #55CFF8;
+    }
+    a.twitter:hover { border: 1px solid #24c1f6 }
+
+    a.rss {
+      background: url('/assets/social/rss.png') center no-repeat #ef7522;
+      border: 1px solid #EF7522;
+    }
+    a.rss:hover { border: 1px solid #cf5d0f }
+
+    a.email {
+      background: url('/assets/social/email.png') center no-repeat #050505;
+      border: 1px solid #050505;
+    }
+    a.email:hover {
+      border: 1px solid #1A1A1A;
     }
   }
+}
+
+.avatar {
+  height: 4em;
+  width: 4em;
+  float: left;
+  margin-top: -3px;
+  border-radius: 0.2em;
+  margin-right: 1em;
+}
+
+.site-nav {
+  width: 100%;
+  border-bottom: 1px solid $border-color;
+
+  a {
+    color: $navbar-text-color;
+  }
+  ul {
+    width: 100%;
+    background: $navbar-background-color;
+    margin: 0;
+    padding: 1%;
+    list-style: none;
+    line-height: 1.5;
+    float: left;
+  }
+  li {
+    display: inline;
+    float: left;
+    margin-left: 1.4em;
+  }
+}
+
+// call out feature
+.call-out {
+  //@extend %padding-regular;
+  padding-bottom: 1%;
+  display: inline-block;
+  width: 100%;
+  background: none repeat scroll 0% 0% $header-desc-background-color;
+  font-size: 1.2em;
+  text-align: center;
+  color: $header-desc-text-color;
+}
+.call-out p:last-child {
+  margin-bottom: 0;
 }
