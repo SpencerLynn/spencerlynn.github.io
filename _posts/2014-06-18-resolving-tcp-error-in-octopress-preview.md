@@ -13,7 +13,7 @@ In my case, it concerned this blog itself. I was having an error while attemptin
 
 The error message:
 
-```
+{% highlight shell-session %}
 >>> Compass is polling for changes. Press Ctrl-C to Stop.
 [2014-06-18 15:09:27] INFO  WEBrick 1.3.1
 [2014-06-18 15:09:27] INFO  ruby 1.9.3 (2014-02-24) [i386-mingw32]
@@ -33,21 +33,21 @@ c:/Ruby193/lib/ruby/1.9.1/webrick/utils.rb:85:in `initialize': Permission denied
         from c:/Ruby193/lib/ruby/gems/1.9.1/gems/rack-1.5.2/bin/rackup:4:in `<top (required)>'
         from c:/Ruby193/bin/rackup:23:in `load'
         from c:/Ruby193/bin/rackup:23:in `<main>'
-```
+{% endhighlight %}
 
 Upon first glance, one might think I have a permissions issue on port 4000. I ensured nothing was currently running on port 4000 and that the Ruby application had permissions to use ports. Still nothing. Like any millennial, I turned to Google. I searched every combination of `TCP Error`, `Permission denied`, and `WEBrick` I could think of. Found nothing that would fix my problem.
 
 Then I ran across an [issue](https://github.com/imathis/octopress/issues/1395) logged against Octopress with a [comment](https://github.com/imathis/octopress/issues/1395#issuecomment-28758511) that gave me an idea. WEBrick was having issues, so I decided to give 'thin' a chance. Maybe it would give a more descriptive error message or something to help me resolve this issue. It was quick an easy to install 'thin'.
 
-```
+{% highlight shell-session %}
 $ gem install thin
 $ echo gem \"thin\" >> Gemfile
 $ bundle install
-```
+{% endhighlight %}
 
 I was cautiously optimistic, but that would only be short lived. Another error message, one that sounded the same at that.
 
-```
+{% highlight shell-session %}
 Thin web server (v1.6.2 codename Doc Brown)
 Maximum connections set to 1024
 Listening on 0.0.0.0:4000, CTRL+C to stop
@@ -66,7 +66,7 @@ c:/Ruby193/lib/ruby/gems/1.9.1/gems/eventmachine-1.0.3-x86-mingw32/lib/eventmach
         from c:/Ruby193/lib/ruby/gems/1.9.1/gems/rack-1.5.2/bin/rackup:4:in `<top (required)>'
         from c:/Ruby193/bin/rackup:23:in `load'
         from c:/Ruby193/bin/rackup:23:in `<main>'
-```
+{% endhighlight %}
 
 Naturally, I went to Google yet again. This time searching for words in this error message -- `start_tcp_server`, `no acceptor`, and `eventmachine.rb`.
 
