@@ -11,7 +11,7 @@ I ran across this [article](http://www.codeproject.com/Tips/798140/Switch-statem
 
 The first example used the following:
 
-```
+{% highlight csharp linenos=table %}
 var myNum = 12;
 
 var cases = new Dictionary<Func<int, bool>, Action>
@@ -22,7 +22,7 @@ var cases = new Dictionary<Func<int, bool>, Action>
 };
 
 cases.First(kvp => kvp.Key(myNum)).Value();
-```
+{% endhighlight %}
 
 After reading I discussed with [Josh Rogers](http://joshuarogers.net). We were impressed with the power to be able to define any condition you'd like as the 'key' to the lookup table. Josh pointed out the ability to add or remove 'cases' on the fly as needed. The value for the first true condition is the one returned (Oh, like a switch statement), but you can add/remove these cases on the fly (Cool, like a dictionary?). So it's as if a switch statement and a dictionary produced a child.
 

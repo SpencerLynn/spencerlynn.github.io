@@ -47,9 +47,7 @@ permalink: /blog/:year/:month/:day/:title/
 excerpt_separator: "<!-- more -->"
 
 # BUILD SETTINGS
-markdown: rdiscount
-#kramdown:
-#  enable_coderay: true
+markdown: kramdown
 highlighter: pygments
 port: 3000
 host: slynn-hp.3-gis.com
