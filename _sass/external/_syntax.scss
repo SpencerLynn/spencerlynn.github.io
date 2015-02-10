@@ -70,14 +70,17 @@
   padding-left: 0px;
   padding-right: 10px;
   border-right:1px solid #ccc;
-  background: #EEE;
 }
 
-.code {
+.highlighttable {
   background: #EEE;
+  border: 1px solid #CCC
 }
 
 .highlight {
+  background: #EEE;
+  border: 1px solid #CCC
+
   pre {
     display: block;
     white-space: pre;
