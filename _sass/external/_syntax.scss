@@ -81,18 +81,20 @@
   background: #EEE;
   border: 1px solid #CCC
 
+  ::selection {
+    background: #E09C35; /* WebKit/Blink Browsers */
+  }
+  ::-moz-selection {
+    background: #E09C35; /* Gecko Browsers */
+  }
+}
+
+.highlight {
   pre {
     display: block;
     white-space: pre;
     overflow-x: auto;
     word-wrap: normal;
     padding-left: 10px;
-
-    ::selection {
-      background: #E09C35; /* WebKit/Blink Browsers */
-    }
-    ::-moz-selection {
-      background: #E09C35; /* Gecko Browsers */
-    }
   }
 }
