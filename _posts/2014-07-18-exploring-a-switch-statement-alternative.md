@@ -30,7 +30,7 @@ Switch statements have default cases, though. What about those? Default cases be
 
 Moving on, what would this default case even look like? Maybe this?
 
-{% highlight csharp linenos=table %}
+{% highlight csharp %}
 x => true, () => Console.WriteLine("Default case.")
 {% endhighlight %}
 
