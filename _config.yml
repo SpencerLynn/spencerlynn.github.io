@@ -50,7 +50,7 @@ excerpt_separator: "<!-- more -->"
 markdown: rdiscount
 #kramdown:
 #  enable_coderay: true
-highlighter: rouge
+highlighter: pygments
 port: 3000
 host: slynn-hp.3-gis.com
 sass:
