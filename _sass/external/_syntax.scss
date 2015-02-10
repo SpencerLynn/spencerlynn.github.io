@@ -63,24 +63,27 @@
 .il { color: #009999 } /* Literal.Number.Integer.Long */
 
 .linenos {
-  color: #ccc;
+  color: #777;
   display:inline-block;
   padding-top: 0px;
   padding-bottom: 0px;
   padding-left: 0px;
   padding-right: 10px;
   border-right:1px solid #ccc;
-  background: #DDD;
+  background: #EEE;
+}
+
+.code {
+  background: #EEE;
 }
 
 .highlight {
-  pre code {
+  pre {
     display: block;
     white-space: pre;
     overflow-x: auto;
     word-wrap: normal;
     padding-left: 10px;
-    background: #DDD;
 
     ::selection {
       background: #E09C35; /* WebKit/Blink Browsers */
