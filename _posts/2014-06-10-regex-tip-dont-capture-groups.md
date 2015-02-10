@@ -3,9 +3,11 @@ layout: post
 title: "Regex Tip: Don't Capture Groups"
 date: 2014-06-10 10:54:18 -0500
 comments: true
-categories: 
+categories:
 ---
 Regular expressions can be super useful, but they can also be a bit of a pain to work with sometimes. Yesterday I learned about something pretty handy -- a way to tell the regular expression to not capture a group. I've been dealing with captured groups that I do not need captured for years now. Finally, I found an way to remove that nuisance.
+
+<!-- more -->
 
 Let's begin by considering the following string with a label and a value separated by a colon. However, white space before and after the colon is optional.
 

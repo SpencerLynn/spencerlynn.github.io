@@ -3,11 +3,15 @@ layout: post
 title: "Resolving TCP Error in Octopress Preview"
 date: 2014-06-18 15:13:36 -0500
 comments: true
-categories: 
+categories:
 ---
 Not all error messages are very helpful. Usually, the less descriptive an error message is, the longer it takes to track down the issue.
 
-In my case, it concerned this blog itself. I was having an error while attempting to preview my site with `rake preview`. The error message:
+In my case, it concerned this blog itself. I was having an error while attempting to preview my site with `rake preview`.
+
+<!-- more -->
+
+The error message:
 
 ```
 >>> Compass is polling for changes. Press Ctrl-C to Stop.
@@ -66,7 +70,7 @@ c:/Ruby193/lib/ruby/gems/1.9.1/gems/eventmachine-1.0.3-x86-mingw32/lib/eventmach
 
 Naturally, I went to Google yet again. This time searching for words in this error message -- `start_tcp_server`, `no acceptor`, and `eventmachine.rb`.
 
-Still nothing to fix my issue. Maybe WEBrick or thin isn't the issue at all.. 
+Still nothing to fix my issue. Maybe WEBrick or thin isn't the issue at all..
 
 My next step was to dig into the 'Rakefile' itself to see what exactly is going on inside `rake preview`. I looked at the preview section, but nothing stood out. After several minutes of looking elsewhere in the Rakefile, I found it.
 

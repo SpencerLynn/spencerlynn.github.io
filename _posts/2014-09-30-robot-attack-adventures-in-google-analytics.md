@@ -3,11 +3,13 @@ layout: post
 title: "Robot Attack: Adventures in Google Analytics"
 date: 2014-09-30 10:00:05 -0500
 comments: true
-categories: 
+categories:
 ---
 It's been a while since I've posted. I'm not sure if anyone even reads my posts anyway... If only there were a way to see if anyone reads them... Which reminds me...
 
 Once upon a time, I set up Google Analytics on a couple websites. The immediate results were actually really neat. I could see that people were visiting the sites.
+
+<!-- more -->
 
 Well, it was all really neat until I really dug into the details. Then I noticed something that I thought was odd. Most of the hits were from Brazil; in fact, nearly 50% of the hits were from Brazil. ON BOTH SITES. Two independent sites. Both with similar results. Why are there so many views from Brazil. One of the sites is for an application I have that is for retiring United States Military service members. Why would someone in Brazil care about that?
 
@@ -15,7 +17,7 @@ I overheard [Josh Rogers](http://joshuarogers.net), who first showed me Google A
 
 I then searched far and wide inside the deep forest of Google Analytics. Then I found a checkbox for "Bot Filtering".
 
-First, go to the Admin section at the top. Then, click on the "View Settings" in the rightmost column. 
+First, go to the Admin section at the top. Then, click on the "View Settings" in the rightmost column.
 
 [![Google Analytics - Admin](/assets/2014-09-30-ga-view-settings.png)](/assets/2014-09-30-ga-view-settings.PNG)
 

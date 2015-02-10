@@ -42,13 +42,15 @@ theme:
 paginate: 5
 paginate_path: "blog/page:num"
 
-permalink: pretty
+permalink: /blog/:year/:month/:day/:title/
+
+excerpt_separator: "<!-- more -->"
 
 # BUILD SETTINGS
-markdown: kramdown
-kramdown:
-  enable_coderay: true
-highlighter: pygments
+markdown: rdiscount
+#kramdown:
+#  enable_coderay: true
+highlighter: rouge
 port: 3000
 host: slynn-hp.3-gis.com
 sass:

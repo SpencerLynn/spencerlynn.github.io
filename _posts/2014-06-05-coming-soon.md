@@ -7,4 +7,6 @@ categories:
 ---
 Coming soon to a browser near you!
 
-Big thanks to [Joey Robichaud](https://github.com/JoeRobich) for the help getting this going!
+<!-- more -->
+
+Big thanks to [Joey Robichaud](https://github.com/JoeRobich) for the help getting this blog going!
