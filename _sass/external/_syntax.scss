@@ -64,32 +64,22 @@
 
 .linenos {
   color: #777;
-  display:inline-block;
   padding-top: 0px;
   padding-bottom: 0px;
   padding-left: 0px;
   padding-right: 10px;
-  border-right:1px solid #ccc;
 }
 
 .highlighttable {
   background: #EEE;
-  border: 1px solid #CCC
+  border: 1px solid #CCC;
 }
 
 .highlight {
   background: #EEE;
-  border: 1px solid #CCC
+  border: 1px solid #CCC;
+  margin-bottom: 1em;
 
-  ::selection {
-    background: #E09C35; /* WebKit/Blink Browsers */
-  }
-  ::-moz-selection {
-    background: #E09C35; /* Gecko Browsers */
-  }
-}
-
-.highlight {
   pre {
     display: block;
     white-space: pre;
