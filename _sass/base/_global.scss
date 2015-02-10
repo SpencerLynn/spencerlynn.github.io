@@ -105,3 +105,45 @@ img[align=left] {
 img[align=right] {
   margin-left: 3%;
 }
+
+#blog-archives {
+  h1 {
+    font-size: 1.5em;
+    margin-bottom: 0.3em;
+
+    a {
+      display: inline-block;
+    }
+  }
+  h2 {
+    float: left;
+    display: inline-block;
+    position: relative;
+    color: #AAA;
+  }
+  h2:first-child {
+    padding-top: 0.5em;
+  }
+  article {
+    float: none;
+    margin-left: 5em;
+    padding: 1em 0px;
+    padding-left: 4.5em;
+    padding-bottom: 0.7em;
+    position: relative;
+
+    time {
+      position: absolute;
+      text-align: right;
+      left: 0em;
+      top: 2.6em;
+      line-height: 1.2em;
+      font-size: 1em;
+
+      span {
+        color: #AAA;
+        text-transform: uppercase;
+      }
+    }
+  }
+}
