@@ -66,7 +66,7 @@ public class UserRouteConstraint : IRouteConstraint
 }
 {% endhighlight %}
 
-Obviously, this is far from robust. For example, default actions on controllers are not taken into consideration. It might also be a good idea to find a different way to compare the requested area/controller to the ones visible by the user. Also how those values are stored in the database - "area"/"controller" might be be the best way <sup>2</sup>
+Obviously, this is far from robust. For example, default actions on controllers are not taken into consideration. It might also be a good idea to find a different way to compare the requested area/controller to the ones visible by the user. Also how those values are stored in the database - "area"/"controller" might be be the best way <sup>2</sup>.
 
 Our job is not done yet, however. For this route constraint to work, it has to be added to the route. I already mentioned that I did not want to update each controller. I also don't want to update each Area Registration to include the route constraints. However, I can just spin through all my routes once they are all registered.
 
