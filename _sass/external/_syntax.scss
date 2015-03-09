@@ -73,13 +73,13 @@
 .highlighttable {
   background: #EEE;
   border: 1px solid #CCC;
+  overflow-x: auto;
+  display: block;
 }
 
 .highlight {
   background: #EEE;
   margin-bottom: 1em;
-  overflow-x: auto;
-  display: block;
 
   pre {
     display: block;
