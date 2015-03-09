@@ -78,6 +78,8 @@
 .highlight {
   background: #EEE;
   margin-bottom: 1em;
+  overflow-x: auto;
+  display: block;
 
   pre {
     display: block;
