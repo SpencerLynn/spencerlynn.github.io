@@ -21,9 +21,9 @@ using System.Web.Routing;
 public class UserRouteConstraint : IRouteConstraint
 {
     public bool Match(HttpContextBase httpContext, Route route, string parameterName, RouteValueDictionary values, RouteDirection routeDirection)
-	{
-		// We'll return true or false on whether this route is allowed
-	}
+    {
+        // We'll return true or false on whether this route is allowed
+    }
 }
 {% endhighlight %}
 
@@ -39,30 +39,28 @@ using System.Web.Routing;
 public class UserRouteConstraint : IRouteConstraint
 {
     public bool Match(HttpContextBase httpContext, Route route, string parameterName, RouteValueDictionary values, RouteDirection routeDirection)
-	{
-		var usernameCookie = httpContext.Request.Cookies["name"];
-		if (usernameCookie == null)
-			return true;
-		
-		return CanUserViewRoute(usernameCookie.Value);
-	}
-	
-	private bool CanUserViewRoute(string username, Route route, RouteValueDictionary values)
-	{
-		var viewsForUser = ;
-		
-		var area = (string)route.DataTokens["area"];
-		var controller = (string)values["controller"];
-		var areaController = string.Format("{0}/{1}", area, controller);
-		
-		return GetViewsForUser(usernameCookie.Value).Any(v => v.Equals(areaController));
-	}
-	
-	private IEnumerable<string> GetViewsForUser(string username)
-	{
-		// In this case, we have a list of 'views' the user can view stored in a database
-		return new List<string>();
-	}
+    {
+        var usernameCookie = httpContext.Request.Cookies["name"];
+        if (usernameCookie == null)
+            return true;
+
+        return CanUserViewRoute(usernameCookie.Value);
+    }
+
+    private bool CanUserViewRoute(string username, Route route, RouteValueDictionary values)
+    {
+        var area = (string)route.DataTokens["area"];
+        var controller = (string)values["controller"];
+        var areaController = string.Format("{0}/{1}", area, controller);
+
+        return GetViewsForUser(usernameCookie.Value).Any(v => v.Equals(areaController));
+    }
+
+    private IEnumerable<string> GetViewsForUser(string username)
+    {
+        // In this case, we have a list of 'views' the user can view stored in a database
+        return new List<string>();
+    }
 }
 {% endhighlight %}
 
@@ -80,20 +78,20 @@ using System.Web.Routing;
 
 public class MyApplication : HttpApplication
 {
-	protected void Application_Start()
-	{
-		// Other code to register areas
-		
-		foreach (Route route in RouteTable.Routes)
-		{
-			if (route.Constraints == null)
-				route.Constraints = new RouteValueDictionary();
-			
-			route.Constraints["controller"] = new UserRouteConstraint();
-		}
-		
-		// Other code to register all routes in each area
-	}
+    protected void Application_Start()
+    {
+        // Other code to register areas
+
+        foreach (Route route in RouteTable.Routes)
+        {
+            if (route.Constraints == null)
+                route.Constraints = new RouteValueDictionary();
+
+            route.Constraints["controller"] = new UserRouteConstraint();
+        }
+
+        // Other code to register all routes in each area
+    }
 }
 {% endhighlight %}
 
