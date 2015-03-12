@@ -62,11 +62,17 @@
 .vi { color: #008080 } /* Name.Variable.Instance */
 .il { color: #009999 } /* Literal.Number.Integer.Long */
 
+.post-content {
+  p code {
+    background: #eeeeee;
+  }
+}
+
 .linenos {
   color: #777;
   padding-top: 0px;
   padding-bottom: 0px;
-  padding-left: 0px;
+  padding-left: 10px;
   padding-right: 10px;
 }
 
@@ -75,6 +81,10 @@
   border: 1px solid #CCC;
   overflow-x: auto;
   display: block;
+  .code {
+    border-right-width: 0px;
+    border-right-style: none;
+  }
 }
 
 .highlight {
