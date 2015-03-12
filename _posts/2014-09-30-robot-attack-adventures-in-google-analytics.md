@@ -25,6 +25,6 @@ There will be an option for "Exclude all hits from known bots and spiders".
 
 [![Google Analytics - Admin](/assets/2014-09-30-ga-bot-filtering.png)](/assets/2014-09-30-ga-bot-filtering.PNG)
 
-There you have it! Bot filtering is now enabled on your Google Analytics enabled site!<sup>1</sup>
+There you have it! Bot filtering is now enabled on your Google Analytics enabled site![^1]
 
-<sup>1</sup>I haven't had the setting turned on for long enough to determine how effective it is (I just enabled it earlier today).
+[^1]: I haven't had the setting turned on for long enough to determine how effective it is (I just enabled it earlier today).

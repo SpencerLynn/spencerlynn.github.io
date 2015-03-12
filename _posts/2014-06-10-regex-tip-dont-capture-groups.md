@@ -19,7 +19,7 @@ So we begin by writing a regular expression
 
 `(.*)(\s*)?:(\s*)?(.*)`
 
-This results in four groups<sup>1</sup>:
+This results in four groups[^1]:
 
 1. `Some Header`
 2. `nil`
@@ -30,11 +30,11 @@ But really, we don't want to capture the optional white space. It just creates g
 
 `(.*)(?:\s*)?:(?:\s*)?(.*)`
 
-Now we have only the results we care about<sup>1</sup>:
+Now we have only the results we care about[^1]:
 
 1. `Some Header`
 2. `Some Value`
 
 This is a pretty convenient regex option that I plan on using often going forward.
 
-<sup>1</sup> Note: For simplicity I intentionally left out the actual first group in the result -- the full string.
+[^1]: Note: For simplicity I intentionally left out the actual first group in the result -- the full string.

@@ -36,7 +36,7 @@ x => true, () => Console.WriteLine("Default case.")
 
 So how would this be used in real life, anyway? It seems like some special thought and handling has to be put into each time this concept is implemented. How practical is it to have all that handling each time? It seems like a lot of code that will look the same each time you want to use one of these.
 
-Why not extract this whole idea into a class to make it easier to use? Let's call it `Swictionary`<sup>1</sup>, since this is supposed to be the offspring of a switch and a dictionary. Since we are extracting this into a class, we can pull the default case outside of the cases themselves. This will be more clear anyway, and we won't have to worry about in what order the default case is added. We can also expose methods to add cases and update the default case.
+Why not extract this whole idea into a class to make it easier to use? Let's call it `Swictionary`[^1], since this is supposed to be the offspring of a switch and a dictionary. Since we are extracting this into a class, we can pull the default case outside of the cases themselves. This will be more clear anyway, and we won't have to worry about in what order the default case is added. We can also expose methods to add cases and update the default case.
 
 Take 1 of the `Swictionary` class:
 
@@ -143,4 +143,4 @@ We generalized both the input and output of the 'switch' statement. This allows 
 
 This gives a lot of flexibility to invent new ways to use conditional look ups.
 
-<sup>1</sup> I wish I could say I came up with the name `Swictionary`, but all that credit belongs to [Joey Robichaud](https://github.com/JoeRobich).
+[^1]: I wish I could say I came up with the name `Swictionary`, but all that credit belongs to [Joey Robichaud](https://github.com/JoeRobich).
