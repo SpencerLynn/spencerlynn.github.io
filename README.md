@@ -1,8 +1,6 @@
-A free and open-source [Jekyll](http://jekyllrb.com) theme. Great for blogs and easy to customize.
+# Spencer Lynn: A Site
 
-## Get Started
-
-Loosely based on [Type Theme](https://rohanchandra.github.io/type-theme/)
+A site. By me - Spencer.
 
 ## License
 The MIT License (MIT)
