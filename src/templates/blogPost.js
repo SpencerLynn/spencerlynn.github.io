@@ -1,11 +1,50 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-import styled from 'styled-components';
+import styled, { injectGlobal } from 'styled-components';
 
 // Needed to show line numbers for code snippets.
 import * as LineStyles from "prismjs/plugins/line-numbers/prism-line-numbers.css";
 
 import { Content, Layout, Subline } from 'components';
+
+injectGlobal`
+  /**
+   * Add back the container background-color, border-radius, padding, margin
+   * and overflow that we removed from <pre>.
+   */
+  .gatsby-highlight {
+    background-color: #fdf6e3;
+    border-radius: 0.3em;
+    margin: 0.5em 0;
+    padding: 1em;
+    overflow: auto;
+  }
+
+  /**
+   * Remove the default PrismJS theme background-color, border-radius, margin,
+   * padding and overflow.
+   */
+  .gatsby-highlight pre[class*="language-"] {
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    overflow: initial;
+    float: left;
+    min-width: 100%;
+  }
+  .gatsby-highlight pre[class*="language-"].line-numbers {
+    padding-left: 2.8em;
+  }
+
+  /**
+   * Background color for inline code
+   */
+  code[class*="language-"] {
+    background-color: #fdf6e3;
+    padding: 0.3em;
+    border-radius: 0.3em;
+  }
+`
 
 const PostContent = styled.div`
   margin-top: 2rem;

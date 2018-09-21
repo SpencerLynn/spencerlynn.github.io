@@ -16,11 +16,11 @@ I then searched far and wide inside the deep forest of Google Analytics. Then I 
 
 First, go to the Admin section at the top. Then, click on the "View Settings" in the rightmost column.
 
-[![Google Analytics - Admin](/assets/2014-09-30-ga-view-settings.png)](/assets/2014-09-30-ga-view-settings.png)
+![Google Analytics - Admin Settings](2014-09-30-ga-view-settings.png)
 
 There will be an option for "Exclude all hits from known bots and spiders".
 
-[![Google Analytics - Admin](/assets/2014-09-30-ga-bot-filtering.png)](/assets/2014-09-30-ga-bot-filtering.png)
+![Google Analytics - Admin filtering](2014-09-30-ga-bot-filtering.png)
 
 There you have it! Bot filtering is now enabled on your Google Analytics enabled site![^1]
 

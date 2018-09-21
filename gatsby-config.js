@@ -31,6 +31,7 @@ module.exports = {
           },
           'gatsby-remark-prismjs',
           'gatsby-remark-autolink-headers',
+          `gatsby-remark-images`
         ],
       },
     },
@@ -55,6 +56,7 @@ module.exports = {
         icon: config.favicon,
       },
     },
-    'gatsby-plugin-offline'
+    'gatsby-plugin-offline',
+    `gatsby-plugin-sharp`
   ]
 };
