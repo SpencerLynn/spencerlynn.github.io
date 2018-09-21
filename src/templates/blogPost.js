@@ -2,6 +2,8 @@ import React from 'react';
 import { graphql } from 'gatsby';
 import styled, { injectGlobal } from 'styled-components';
 
+import theme from '../../config/Theme';
+
 // Needed to show line numbers for code snippets.
 import * as LineStyles from "prismjs/plugins/line-numbers/prism-line-numbers.css";
 
@@ -43,6 +45,13 @@ injectGlobal`
     background-color: #fdf6e3;
     padding: 0.3em;
     border-radius: 0.3em;
+  }
+
+  article p a {
+    color: ${theme.colors.primary};
+    :hover {
+      opacity: 0.75;
+    }
   }
 `
 
