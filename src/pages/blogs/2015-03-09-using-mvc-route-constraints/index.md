@@ -10,7 +10,7 @@ I did some research and tried a few strategies. Then [Josh Rogers](http://joshua
 
 The `IRouteConstraint` interface only has one method to implement: `Match`. We'll add a class to handle this constraint.
 
-{% highlight csharp linenos=table %}
+```C#{numberLines: true}
 using System.Linq;
 using System.Web;
 using System.Web.Routing;
@@ -22,13 +22,13 @@ public class UserRouteConstraint : IRouteConstraint
         // We'll return true or false on whether this route is allowed
     }
 }
-{% endhighlight %}
+```
 
 You'll notice that the arguments into `Match` make this function quite flexible. There is the HTTP context, the parameter name, a route value dictionary that holds various values, and the direction of the route[^1]. All sorts of route constraints can be built with these combinations.
 
 For this use case, all we needed to do was check which user was logged in (via a cookie) and see if that user is allowed to visit the area that is being requested. Let's begin to build this method. For now, we will look past how  we determine which views are visible to which user. In my case they were stored in a database. So a quick database query was all that was needed.
 
-{% highlight csharp linenos=table %}
+```C#{numberLines: true}
 using System.Linq;
 using System.Web;
 using System.Web.Routing;
@@ -60,7 +60,7 @@ public class UserRouteConstraint : IRouteConstraint
         return new List<string>();
     }
 }
-{% endhighlight %}
+```
 
 Obviously, this is far from robust. For example, default actions on controllers are not taken into consideration. It might also be a good idea to find a different way to compare the requested area/controller to the ones visible by the user. Also how those values are stored in the database - "area"/"controller" might be be the best way[^2].
 
@@ -68,7 +68,7 @@ Our job is not done yet, however. For this route constraint to work, it has to b
 
 In my subclass of `HttpApplication`, in the `Application_Start` method, I will add this constraint to each route. The constraint will be added as a controller constraint.
 
-{% highlight csharp linenos=table %}
+```C#{numberLines: true}
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -91,7 +91,7 @@ public class MyApplication : HttpApplication
         // Other code to register all routes in each area
     }
 }
-{% endhighlight %}
+```
 
 Again, this code could probably be spruced up a bit and some robustness added. But for demonstration purposes, it does the job.
 

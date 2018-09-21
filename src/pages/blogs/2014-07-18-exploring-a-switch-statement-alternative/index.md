@@ -8,7 +8,7 @@ I ran across this [article](http://www.codeproject.com/Tips/798140/Switch-statem
 
 The first example used the following:
 
-{% highlight csharp linenos=table %}
+```C#{numberLines: true}
 var myNum = 12;
 
 var cases = new Dictionary<Func<int, bool>, Action>
@@ -19,7 +19,7 @@ var cases = new Dictionary<Func<int, bool>, Action>
 };
 
 cases.First(kvp => kvp.Key(myNum)).Value();
-{% endhighlight %}
+```
 
 After reading I discussed with [Josh Rogers](http://joshuarogers.net). We were impressed with the power to be able to define any condition you'd like as the 'key' to the lookup table. Josh pointed out the ability to add or remove 'cases' on the fly as needed. The value for the first true condition is the one returned (Oh, like a switch statement), but you can add/remove these cases on the fly (Cool, like a dictionary?). So it's as if a switch statement and a dictionary produced a child.
 
@@ -27,9 +27,9 @@ Switch statements have default cases, though. What about those? Default cases be
 
 Moving on, what would this default case even look like? Maybe this?
 
-{% highlight csharp %}
+```C#{numberLines: true}
 x => true, () => Console.WriteLine("Default case.")
-{% endhighlight %}
+```
 
 So how would this be used in real life, anyway? It seems like some special thought and handling has to be put into each time this concept is implemented. How practical is it to have all that handling each time? It seems like a lot of code that will look the same each time you want to use one of these.
 
@@ -37,7 +37,7 @@ Why not extract this whole idea into a class to make it easier to use? Let's cal
 
 Take 1 of the `Swictionary` class:
 
-{% highlight csharp linenos=table %}
+```C#{numberLines: true}
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,7 +72,7 @@ public class Swictionary<T>
 		this.Default = @default;
 	}
 }
-{% endhighlight %}
+```
 
 This seemed to work for simple types, such as `int`, `string`, etc. But the example in the [article](http://www.codeproject.com/Tips/798140/Switch-statement-alternative) used `Func<int, bool>` types. This is, after all, where all the power would be. And while we're at it, why limit the user to just `Action` types as the value?
 
@@ -80,7 +80,7 @@ I knew this could be better. So I showed this to [Joey Robichaud](https://github
 
 Take 2 of `Swictionary` class:
 
-{% highlight csharp linenos=table %}
+```C#{numberLines: true}
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -132,7 +132,7 @@ public class Swictionary<TKey, TValue>
         this.Default = @default;
     }
 }
-{% endhighlight %}
+```
 
 Explore for yourself in this [dotnetFiddle](https://dotnetfiddle.net/qeApD5) or with this GitHub [gist](https://gist.github.com/SpencerLynn/634d1dbafdfd0f1acd53).
 

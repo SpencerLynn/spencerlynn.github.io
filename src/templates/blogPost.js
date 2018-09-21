@@ -2,6 +2,9 @@ import React from 'react';
 import { graphql } from 'gatsby';
 import styled from 'styled-components';
 
+// Needed to show line numbers for code snippets.
+import * as LineStyles from "prismjs/plugins/line-numbers/prism-line-numbers.css";
+
 import { Content, Layout, Subline } from 'components';
 
 const PostContent = styled.div`
