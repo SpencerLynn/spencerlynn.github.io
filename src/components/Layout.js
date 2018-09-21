@@ -98,15 +98,43 @@ const GitHubLink = () => (
   </a>
 );
 
+const HeaderRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+`;
+
+const EmptySpace = styled.div`
+  flex: 1 1 auto;
+`;
+
+const LinksContainer = styled.div`
+  flex: 1 0 auto;
+  display: flex;
+`;
+
+const NavigationLink = styled(Link)`
+  font-size: 1rem;
+  margin-left: 1rem;
+`;
+
 const Layout = ({ children }) => (
   <ThemeProvider theme={theme}>
     <React.Fragment>
       <Wrapper>
         <Helmet title={config.siteTitle} />
         <Header>
-          <Link to="/">{config.siteTitle}</Link>
-          <TwitterLink />
-          <GitHubLink />
+          <HeaderRow>
+            <Link to="/">{config.siteTitle}</Link>
+            <TwitterLink />
+            <GitHubLink />
+            <LinksContainer>
+              <EmptySpace />
+              <NavigationLink to="/" >Blogs</NavigationLink>
+              <NavigationLink to="/about" >About</NavigationLink>
+            </LinksContainer>
+          </HeaderRow>
         </Header>
         {children}
       </Wrapper>
