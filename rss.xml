@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Spencer Lynn]]></title><description><![CDATA[This is a thing...]]></description><link>https://spencerlynn.com</link><generator>RSS for Node</generator><lastBuildDate>Wed, 10 Oct 2018 04:47:16 GMT</lastBuildDate><item><title><![CDATA[Using MVC Route Constraints]]></title><description><![CDATA[A recent work project needed the ability to "turn on and off" MVC routes dynamically, depending on the user that was logged into the system. However, I didn't want to update all the existing controllers to handle the logic in each action. Furthermore, I didn't want any new controllers/actions to need to know about this logic.
+
+I did some research and tried a few strategies. Then [Josh Rogers](http://joshuarogers.net) mentioned `IRouteConstraint`.
+
+]]></description><link>https://spencerlynn.com/blogs/2015-03-09-using-mvc-route-constraints/</link><guid isPermaLink="false">https://spencerlynn.com/blogs/2015-03-09-using-mvc-route-constraints/</guid><pubDate>Mon, 09 Mar 2015 18:09:42 GMT</pubDate><content:encoded>&lt;p&gt;A recent work project needed the ability to &quot;turn on and off&quot; MVC routes dynamically, depending on the user that was logged into the system. However, I didn&apos;t want to update all the existing controllers to handle the logic in each action. Furthermore, I didn&apos;t want any new controllers/actions to need to know about this logic.&lt;/p&gt;
+&lt;p&gt;I did some research and tried a few strategies. Then &lt;a href=&quot;http://joshuarogers.net&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Josh Rogers&lt;/a&gt; mentioned &lt;code class=&quot;language-text&quot;&gt;IRouteConstraint&lt;/code&gt;.&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;p&gt;The &lt;code class=&quot;language-text&quot;&gt;IRouteConstraint&lt;/code&gt; interface only has one method to implement: &lt;code class=&quot;language-text&quot;&gt;Match&lt;/code&gt;. We&apos;ll add a class to handle this constraint.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;c#&quot;&gt;&lt;pre style=&quot;counter-reset: linenumber 0&quot; class=&quot;language-c# line-numbers&quot;&gt;&lt;code class=&quot;language-c#&quot;&gt;using System.Linq;
+using System.Web;
+using System.Web.Routing;
+
+public class UserRouteConstraint : IRouteConstraint
+{
+    public bool Match(HttpContextBase httpContext, Route route, string parameterName, RouteValueDictionary values, RouteDirection routeDirection)
+    {
+        // We&amp;#39;ll return true or false on whether this route is allowed
+    }
+}&lt;/code&gt;&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot; style=&quot;white-space: normal; width: auto; left: 0;&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You&apos;ll notice that the arguments into &lt;code class=&quot;language-text&quot;&gt;Match&lt;/code&gt; make this function quite flexible. There is the HTTP context, the parameter name, a route value dictionary that holds various values, and the direction of the route&lt;sup id=&quot;fnref-1&quot;&gt;&lt;a href=&quot;#fn-1&quot; class=&quot;footnote-ref&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;. All sorts of route constraints can be built with these combinations.&lt;/p&gt;
+&lt;p&gt;For this use case, all we needed to do was check which user was logged in (via a cookie) and see if that user is allowed to visit the area that is being requested. Let&apos;s begin to build this method. For now, we will look past how  we determine which views are visible to which user. In my case they were stored in a database. So a quick database query was all that was needed.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;c#&quot;&gt;&lt;pre style=&quot;counter-reset: linenumber 0&quot; class=&quot;language-c# line-numbers&quot;&gt;&lt;code class=&quot;language-c#&quot;&gt;using System.Linq;
+using System.Web;
+using System.Web.Routing;
+
+public class UserRouteConstraint : IRouteConstraint
+{
+    public bool Match(HttpContextBase httpContext, Route route, string parameterName, RouteValueDictionary values, RouteDirection routeDirection)
+    {
+        var usernameCookie = httpContext.Request.Cookies[&amp;quot;name&amp;quot;];
+        if (usernameCookie == null)
+            return true;
+
+        return CanUserViewRoute(usernameCookie.Value);
+    }
+
+    private bool CanUserViewRoute(string username, Route route, RouteValueDictionary values)
+    {
+        var area = (string)route.DataTokens[&amp;quot;area&amp;quot;];
+        var controller = (string)values[&amp;quot;controller&amp;quot;];
+        var areaController = string.Format(&amp;quot;{0}/{1}&amp;quot;, area, controller);
+
+        // Look for any view that matches the area-controller combination
+        return GetViewsForUser(usernameCookie.Value).Any(v =&amp;gt; v.Equals(areaController));
+    }
+
+    private IEnumerable&amp;lt;string&amp;gt; GetViewsForUser(string username)
+    {
+        // Whatever is needed to determine which views are visible to this user
+        return new List&amp;lt;string&amp;gt;();
+    }
+}&lt;/code&gt;&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot; style=&quot;white-space: normal; width: auto; left: 0;&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Obviously, this is far from robust. For example, default actions on controllers are not taken into consideration. It might also be a good idea to find a different way to compare the requested area/controller to the ones visible by the user. Also how those values are stored in the database - &quot;area&quot;/&quot;controller&quot; might be be the best way&lt;sup id=&quot;fnref-2&quot;&gt;&lt;a href=&quot;#fn-2&quot; class=&quot;footnote-ref&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;p&gt;Our job is not done yet, however. For this route constraint to work, it has to be added to the route. I already mentioned that I did not want to update each controller. I also don&apos;t want to update each Area Registration to include the route constraints. However, I can just spin through all my routes once they are all registered.&lt;/p&gt;
+&lt;p&gt;In my subclass of &lt;code class=&quot;language-text&quot;&gt;HttpApplication&lt;/code&gt;, in the &lt;code class=&quot;language-text&quot;&gt;Application_Start&lt;/code&gt; method, I will add this constraint to each route. The constraint will be added as a controller constraint.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;c#&quot;&gt;&lt;pre style=&quot;counter-reset: linenumber 0&quot; class=&quot;language-c# line-numbers&quot;&gt;&lt;code class=&quot;language-c#&quot;&gt;using System.Web;
+using System.Web.Http;
+using System.Web.Mvc;
+using System.Web.Routing;
+
+public class MyApplication : HttpApplication
+{
+    protected void Application_Start()
+    {
+        // Other code to register areas
+
+        foreach (Route route in RouteTable.Routes)
+        {
+            if (route.Constraints == null)
+                route.Constraints = new RouteValueDictionary();
+
+            route.Constraints[&amp;quot;controller&amp;quot;] = new UserRouteConstraint();
+        }
+
+        // Other code to register all routes in each area
+    }
+}&lt;/code&gt;&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot; style=&quot;white-space: normal; width: auto; left: 0;&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Again, this code could probably be spruced up a bit and some robustness added. But for demonstration purposes, it does the job.&lt;/p&gt;
+&lt;p&gt;For this use case, it worked perfectly. We were able to prevent certain users from accessing routes that were they were not permitted to view.&lt;/p&gt;
+&lt;p&gt;There might be a better way to do this. If you know of a better way, feel free to comment and let me know!&lt;/p&gt;
+&lt;div class=&quot;footnotes&quot;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&quot;fn-1&quot;&gt;
+&lt;p&gt;I&apos;m really good taking a parameter name and re-wording it into a sentence :)&lt;/p&gt;
+&lt;a href=&quot;#fnref-1&quot; class=&quot;footnote-backref&quot;&gt;↩&lt;/a&gt;
+&lt;/li&gt;
+&lt;li id=&quot;fn-2&quot;&gt;
+&lt;p&gt;This is just a blog post and demonstration after all. You can&apos;t expect me to do all the work for you. That&apos;s what StackOverflow is for..&lt;/p&gt;
+&lt;a href=&quot;#fnref-2&quot; class=&quot;footnote-backref&quot;&gt;↩&lt;/a&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Robot Attack: Adventures in Google Analytics]]></title><description><![CDATA[It's been a while since I've posted. I'm not sure if anyone even reads my posts anyway... If only there were a way to see if anyone reads them... Which reminds me...
+
+Once upon a time, I set up Google Analytics on a couple websites. The immediate results were actually really neat. I could see that people were visiting the sites.
+
+]]></description><link>https://spencerlynn.com/blogs/2014-09-30-robot-attack-adventures-in-google-analytics/</link><guid isPermaLink="false">https://spencerlynn.com/blogs/2014-09-30-robot-attack-adventures-in-google-analytics/</guid><pubDate>Tue, 30 Sep 2014 17:00:05 GMT</pubDate><content:encoded>&lt;p&gt;It&apos;s been a while since I&apos;ve posted. I&apos;m not sure if anyone even reads my posts anyway... If only there were a way to see if anyone reads them... Which reminds me...&lt;/p&gt;
+&lt;p&gt;Once upon a time, I set up Google Analytics on a couple websites. The immediate results were actually really neat. I could see that people were visiting the sites.&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;p&gt;Well, it was all really neat until I really dug into the details. Then I noticed something that I thought was odd. Most of the hits were from Brazil; in fact, nearly 50% of the hits were from Brazil. ON BOTH SITES. Two independent sites. Both with similar results. Why are there so many views from Brazil. One of the sites is for an application I have that is for retiring United States Military service members. Why would someone in Brazil care about that?&lt;/p&gt;
+&lt;p&gt;I overheard &lt;a href=&quot;http://joshuarogers.net&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Josh Rogers&lt;/a&gt;, who first showed me Google Analytics, mention his own analytics page and bot filtering. I mentioned my site views from Brazil, and he mentioned having similar views from Brazil. If you are truly an astute observer, you might have guessed that either nothing I found by searching Google seemed like an obvious answer OR I didn&apos;t look through the search results well enough. Honestly, It was probably the latter one, but I hope you didn&apos;t guess that one :)&lt;/p&gt;
+&lt;p&gt;I then searched far and wide inside the deep forest of Google Analytics. Then I found a checkbox for &quot;Bot Filtering&quot;.&lt;/p&gt;
+&lt;p&gt;First, go to the Admin section at the top. Then, click on the &quot;View Settings&quot; in the rightmost column.&lt;/p&gt;
+&lt;p&gt;
+  &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/2014-09-30-ga-view-settings-f8bf1a5488b614ee312beb90c9f7d367-97fac.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+  
+  &lt;span
+    class=&quot;gatsby-resp-image-wrapper&quot;
+    style=&quot;position: relative; display: block; ; max-width: 650px; margin-left: auto; margin-right: auto;&quot;
+  &gt;
+    &lt;span
+      class=&quot;gatsby-resp-image-background-image&quot;
+      style=&quot;padding-bottom: 27.976577748861413%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAGCAIAAABM9SnKAAAACXBIWXMAAA7CAAAOwgEVKEqAAAAAjElEQVQY041Pyw7DIAzj/3+gx/1br1VFBpRAeM2s6pTuVJ8iy45ts+2WyHrv3xNkye10xBiPBzAhBCJqrY0LvY+HgHn+qLWWC3jknEMNEVFk9X4NYS0l/0iDhsx8T+6cEvg7WWJ8pbSMwSdxJs9orQOyCPxdDcANYc6iNxmko7N2QpehEvkjvytEf/wA/YhfnXl+FZEAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+    &gt;
+      &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        style=&quot;width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px white;&quot;
+        alt=&quot;Google Analytics - Admin Settings&quot;
+        title=&quot;&quot;
+        src=&quot;/static/2014-09-30-ga-view-settings-f8bf1a5488b614ee312beb90c9f7d367-10273.png&quot;
+        srcset=&quot;/static/2014-09-30-ga-view-settings-f8bf1a5488b614ee312beb90c9f7d367-9b14a.png 163w,
+/static/2014-09-30-ga-view-settings-f8bf1a5488b614ee312beb90c9f7d367-94962.png 325w,
+/static/2014-09-30-ga-view-settings-f8bf1a5488b614ee312beb90c9f7d367-10273.png 650w,
+/static/2014-09-30-ga-view-settings-f8bf1a5488b614ee312beb90c9f7d367-2fc6f.png 975w,
+/static/2014-09-30-ga-view-settings-f8bf1a5488b614ee312beb90c9f7d367-a8a2c.png 1300w,
+/static/2014-09-30-ga-view-settings-f8bf1a5488b614ee312beb90c9f7d367-97fac.png 1537w&quot;
+        sizes=&quot;(max-width: 650px) 100vw, 650px&quot;
+      /&gt;
+    &lt;/span&gt;
+  &lt;/span&gt;
+  
+  &lt;/a&gt;
+    &lt;/p&gt;
+&lt;p&gt;There will be an option for &quot;Exclude all hits from known bots and spiders&quot;.&lt;/p&gt;
+&lt;p&gt;
+  &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/2014-09-30-ga-bot-filtering-4d7fc60f9b168cc6b306f693cc269824-f302a.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+  
+  &lt;span
+    class=&quot;gatsby-resp-image-wrapper&quot;
+    style=&quot;position: relative; display: block; ; max-width: 650px; margin-left: auto; margin-right: auto;&quot;
+  &gt;
+    &lt;span
+      class=&quot;gatsby-resp-image-background-image&quot;
+      style=&quot;padding-bottom: 82.57261410788381%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAARCAIAAABSJhvpAAAACXBIWXMAAA7BAAAOwQG4kWvtAAABn0lEQVQ4y42TW3KbQBBF2ZT3kA2kyp+pyrK8hOwj39lCVAjJMA8N84BBwOSIjvVhIyf9Mcyjb/ft203VnF6V1q7vQwjWWmOM3kyprtX9Wfngff/Aquv1qpRq2xYk55jStNl1muIwuZBxWPZsXdeKj7GmUx3IlFKMsd9YhOCdu5CVQOWDLfNM0GoYhhBjCHHMeV24nAlU1zUrdDqlyp4BgG+Vc7ZG90YH58hMrPP5TOXzvOC0bvYRLJfVOI6vTZO08lqD5AiSKOU/rIIntMdpym+1XS4XCBOH8HdtHoODRxU24n3r08aCmzt4F39Te0gJthQvHoBvDbcWCrxKhbLZAaett/cMyIjarnfH47FpGo7e+/3McKO30mEBk5b5ggtPBGVDS/drJiEwPFilbPiL7AKD0EO1BYw3SSQzR+cYdr+NWnyU9i9tmQ1RFGkYPjSSWWDP1H3WKvQAD1u5Umo4HFxd65znTerPhyQEMqMYzUZ7Y36cTi8x/lzXQym/S6lLmf5RM3qHMC5L59yXtn0K/rl33537Zu3Xef4l/9I78B+ECdvHZ9ZsCQAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;
+    &gt;
+      &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        style=&quot;width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px white;&quot;
+        alt=&quot;Google Analytics - Admin filtering&quot;
+        title=&quot;&quot;
+        src=&quot;/static/2014-09-30-ga-bot-filtering-4d7fc60f9b168cc6b306f693cc269824-10273.png&quot;
+        srcset=&quot;/static/2014-09-30-ga-bot-filtering-4d7fc60f9b168cc6b306f693cc269824-9b14a.png 163w,
+/static/2014-09-30-ga-bot-filtering-4d7fc60f9b168cc6b306f693cc269824-94962.png 325w,
+/static/2014-09-30-ga-bot-filtering-4d7fc60f9b168cc6b306f693cc269824-10273.png 650w,
+/static/2014-09-30-ga-bot-filtering-4d7fc60f9b168cc6b306f693cc269824-f302a.png 964w&quot;
+        sizes=&quot;(max-width: 650px) 100vw, 650px&quot;
+      /&gt;
+    &lt;/span&gt;
+  &lt;/span&gt;
+  
+  &lt;/a&gt;
+    &lt;/p&gt;
+&lt;p&gt;There you have it! Bot filtering is now enabled on your Google Analytics enabled site!&lt;sup id=&quot;fnref-1&quot;&gt;&lt;a href=&quot;#fn-1&quot; class=&quot;footnote-ref&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;div class=&quot;footnotes&quot;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&quot;fn-1&quot;&gt;
+&lt;p&gt;I haven&apos;t had the setting turned on for long enough to determine how effective it is (I just enabled it earlier today).&lt;/p&gt;
+&lt;a href=&quot;#fnref-1&quot; class=&quot;footnote-backref&quot;&gt;↩&lt;/a&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Exploring a Switch Statement Alternative]]></title><description><![CDATA[I ran across this [article](http://www.codeproject.com/Tips/798140/Switch-statement-alternative) on an alternative to switch statements. Basically it was using a look-up table rather than a switch statement.
+
+]]></description><link>https://spencerlynn.com/blogs/2014-07-18-exploring-a-switch-statement-alternative/</link><guid isPermaLink="false">https://spencerlynn.com/blogs/2014-07-18-exploring-a-switch-statement-alternative/</guid><pubDate>Fri, 18 Jul 2014 19:54:42 GMT</pubDate><content:encoded>&lt;p&gt;I ran across this &lt;a href=&quot;http://www.codeproject.com/Tips/798140/Switch-statement-alternative&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;article&lt;/a&gt; on an alternative to switch statements. Basically it was using a look-up table rather than a switch statement.&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;p&gt;The first example used the following:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;c#&quot;&gt;&lt;pre style=&quot;counter-reset: linenumber 0&quot; class=&quot;language-c# line-numbers&quot;&gt;&lt;code class=&quot;language-c#&quot;&gt;var myNum = 12;
+
+var cases = new Dictionary&amp;lt;Func&amp;lt;int, bool&amp;gt;, Action&amp;gt;
+{
+    { x =&amp;gt; x &amp;lt; 3 ,    () =&amp;gt; Console.WriteLine(&amp;quot;Smaller than 3&amp;quot;)   },
+    { x =&amp;gt; x &amp;lt; 30 ,   () =&amp;gt; Console.WriteLine(&amp;quot;Smaller than 30&amp;quot;)  },
+    { x =&amp;gt; x &amp;lt; 300 ,  () =&amp;gt; Console.WriteLine(&amp;quot;Smaller than 300&amp;quot;) }
+};
+
+cases.First(kvp =&amp;gt; kvp.Key(myNum)).Value();&lt;/code&gt;&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot; style=&quot;white-space: normal; width: auto; left: 0;&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;After reading I discussed with &lt;a href=&quot;http://joshuarogers.net&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Josh Rogers&lt;/a&gt;. We were impressed with the power to be able to define any condition you&apos;d like as the &apos;key&apos; to the lookup table. Josh pointed out the ability to add or remove &apos;cases&apos; on the fly as needed. The value for the first true condition is the one returned (Oh, like a switch statement), but you can add/remove these cases on the fly (Cool, like a dictionary?). So it&apos;s as if a switch statement and a dictionary produced a child.&lt;/p&gt;
+&lt;p&gt;Switch statements have default cases, though. What about those? Default cases become a bit tricky. The default case would have to be the last entry in the dictionary to ensure that it is executed last. So if you added or removed cases, you would have to ensure that the default case was still last. However, a dictionary isn&apos;t ordered -- some say it&apos;s kind of the point.&lt;/p&gt;
+&lt;p&gt;Moving on, what would this default case even look like? Maybe this?&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;c#&quot;&gt;&lt;pre style=&quot;counter-reset: linenumber 0&quot; class=&quot;language-c# line-numbers&quot;&gt;&lt;code class=&quot;language-c#&quot;&gt;x =&amp;gt; true, () =&amp;gt; Console.WriteLine(&amp;quot;Default case.&amp;quot;)&lt;/code&gt;&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot; style=&quot;white-space: normal; width: auto; left: 0;&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;So how would this be used in real life, anyway? It seems like some special thought and handling has to be put into each time this concept is implemented. How practical is it to have all that handling each time? It seems like a lot of code that will look the same each time you want to use one of these.&lt;/p&gt;
+&lt;p&gt;Why not extract this whole idea into a class to make it easier to use? Let&apos;s call it &lt;code class=&quot;language-text&quot;&gt;Swictionary&lt;/code&gt;&lt;sup id=&quot;fnref-1&quot;&gt;&lt;a href=&quot;#fn-1&quot; class=&quot;footnote-ref&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;, since this is supposed to be the offspring of a switch and a dictionary. Since we are extracting this into a class, we can pull the default case outside of the cases themselves. This will be more clear anyway, and we won&apos;t have to worry about in what order the default case is added. We can also expose methods to add cases and update the default case.&lt;/p&gt;
+&lt;p&gt;Take 1 of the &lt;code class=&quot;language-text&quot;&gt;Swictionary&lt;/code&gt; class:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;c#&quot;&gt;&lt;pre style=&quot;counter-reset: linenumber 0&quot; class=&quot;language-c# line-numbers&quot;&gt;&lt;code class=&quot;language-c#&quot;&gt;using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class Swictionary&amp;lt;T&amp;gt;
+{
+	private Dictionary&amp;lt;T, Action&amp;gt; Cases;
+	private Action Default;
+
+	public Swictionary(Dictionary&amp;lt;T, Action&amp;gt; cases, Action @default)
+	{
+		this.Cases = cases;
+		this.Default = @default;
+	}
+
+	public Action GetValue(T key)
+	{
+		Action value;
+		if (Cases.TryGetValue(key, out value))
+			return value;
+
+		return Default;
+	}
+
+	public void AddCase(T key, Action @case)
+	{
+		Cases[key] = @case;
+	}
+
+	public void UpdateDefault(Action @default)
+	{
+		this.Default = @default;
+	}
+}&lt;/code&gt;&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot; style=&quot;white-space: normal; width: auto; left: 0;&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This seemed to work for simple types, such as &lt;code class=&quot;language-text&quot;&gt;int&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;string&lt;/code&gt;, etc. But the example in the &lt;a href=&quot;http://www.codeproject.com/Tips/798140/Switch-statement-alternative&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;article&lt;/a&gt; used &lt;code class=&quot;language-text&quot;&gt;Func&amp;lt;int, bool&amp;gt;&lt;/code&gt; types. This is, after all, where all the power would be. And while we&apos;re at it, why limit the user to just &lt;code class=&quot;language-text&quot;&gt;Action&lt;/code&gt; types as the value?&lt;/p&gt;
+&lt;p&gt;I knew this could be better. So I showed this to &lt;a href=&quot;https://github.com/JoeRobich&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Joey Robichaud&lt;/a&gt; and some collaboration happened.&lt;/p&gt;
+&lt;p&gt;Take 2 of &lt;code class=&quot;language-text&quot;&gt;Swictionary&lt;/code&gt; class:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;c#&quot;&gt;&lt;pre style=&quot;counter-reset: linenumber 0&quot; class=&quot;language-c# line-numbers&quot;&gt;&lt;code class=&quot;language-c#&quot;&gt;using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class Swictionary&amp;lt;TKey, TValue&amp;gt;
+{
+    readonly Dictionary&amp;lt;Predicate&amp;lt;TKey&amp;gt;, TValue&amp;gt; Cases;
+    TValue Default;
+
+    public Swictionary(TValue @default)
+    {
+        Default = @default;
+        this.Cases = new Dictionary&amp;lt;Predicate&amp;lt;TKey&amp;gt;, TValue&amp;gt;();
+    }
+
+    public Swictionary(Dictionary&amp;lt;TKey, TValue&amp;gt; cases, TValue @default)
+        : this(@default)
+    {
+        cases.ToList().ForEach(kvp =&amp;gt; AddCase(kvp.Key, kvp.Value));
+    }
+
+    public Swictionary(Dictionary&amp;lt;Predicate&amp;lt;TKey&amp;gt;, TValue&amp;gt; cases, TValue @default)
+        : this(@default)
+    {
+        cases.ToList().ForEach(kvp =&amp;gt; AddCase(kvp.Key, kvp.Value));
+    }
+
+    public TValue GetValue(TKey @case)
+    {
+        var caseValue = Cases.FirstOrDefault(kvp =&amp;gt; kvp.Key(@case));
+        if (!caseValue.Equals(default(KeyValuePair&amp;lt;Predicate&amp;lt;TKey&amp;gt;, TValue&amp;gt;)))
+            return caseValue.Value;
+
+        return this.Default;
+    }
+
+    public void AddCase(TKey @case, TValue value)
+    {
+        AddCase(t =&amp;gt; t.Equals(@case), value);
+    }
+
+    public void AddCase(Predicate&amp;lt;TKey&amp;gt; @case, TValue value)
+    {
+        Cases[@case] = value;
+    }
+
+    public void UpdateDefault(TValue @default)
+    {
+        this.Default = @default;
+    }
+}&lt;/code&gt;&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot; style=&quot;white-space: normal; width: auto; left: 0;&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Explore for yourself in this &lt;a href=&quot;https://dotnetfiddle.net/qeApD5&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;dotnetFiddle&lt;/a&gt; or with this GitHub &lt;a href=&quot;https://gist.github.com/SpencerLynn/634d1dbafdfd0f1acd53&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;gist&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;We generalized both the input and output of the &apos;switch&apos; statement. This allows the user to do whatever pleases them, in our &lt;code class=&quot;language-text&quot;&gt;SwitchTestDriver&lt;/code&gt; example (found in the gist and jsFiddle), we used &lt;code class=&quot;language-text&quot;&gt;int&lt;/code&gt; as the input and &lt;code class=&quot;language-text&quot;&gt;Action&lt;/code&gt; as the output.&lt;/p&gt;
+&lt;p&gt;This gives a lot of flexibility to invent new ways to use conditional look ups.&lt;/p&gt;
+&lt;div class=&quot;footnotes&quot;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&quot;fn-1&quot;&gt;
+&lt;p&gt;I wish I could say I came up with the name &lt;code class=&quot;language-text&quot;&gt;Swictionary&lt;/code&gt;, but all that credit belongs to &lt;a href=&quot;https://github.com/JoeRobich&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Joey Robichaud&lt;/a&gt;.&lt;/p&gt;
+&lt;a href=&quot;#fnref-1&quot; class=&quot;footnote-backref&quot;&gt;↩&lt;/a&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Resolving TCP Error in Octopress Preview]]></title><description><![CDATA[Not all error messages are very helpful. Usually, the less descriptive an error message is, the longer it takes to track down the issue.
+
+In my case, it concerned this blog itself. I was having an error while attempting to preview my site with `rake preview`.
+
+]]></description><link>https://spencerlynn.com/blogs/2014-06-18-resolving-tcp-error-in-octopress-preview/</link><guid isPermaLink="false">https://spencerlynn.com/blogs/2014-06-18-resolving-tcp-error-in-octopress-preview/</guid><pubDate>Wed, 18 Jun 2014 22:13:36 GMT</pubDate><content:encoded>&lt;p&gt;Not all error messages are very helpful. Usually, the less descriptive an error message is, the longer it takes to track down the issue.&lt;/p&gt;
+&lt;p&gt;In my case, it concerned this blog itself. I was having an error while attempting to preview my site with &lt;code class=&quot;language-text&quot;&gt;rake preview&lt;/code&gt;.&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;p&gt;The error message:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;&amp;gt;&amp;gt;&amp;gt; Compass is polling for changes. Press Ctrl-C to Stop.
+[2014-06-18 15:09:27] INFO  WEBrick 1.3.1
+[2014-06-18 15:09:27] INFO  ruby 1.9.3 (2014-02-24) [i386-mingw32]
+[2014-06-18 15:09:27] WARN  TCPServer Error: Permission denied - bind(2)
+c:/Ruby193/lib/ruby/1.9.1/webrick/utils.rb:85:in `initialize&amp;#39;: Permission denied - bind(2) (Errno::EACCES)
+        from c:/Ruby193/lib/ruby/1.9.1/webrick/utils.rb:85:in `new&amp;#39;
+        from c:/Ruby193/lib/ruby/1.9.1/webrick/utils.rb:85:in `block in create_listeners&amp;#39;
+        from c:/Ruby193/lib/ruby/1.9.1/webrick/utils.rb:82:in `each&amp;#39;
+        from c:/Ruby193/lib/ruby/1.9.1/webrick/utils.rb:82:in `create_listeners&amp;#39;
+        from c:/Ruby193/lib/ruby/1.9.1/webrick/server.rb:82:in `listen&amp;#39;
+        from c:/Ruby193/lib/ruby/1.9.1/webrick/server.rb:70:in `initialize&amp;#39;
+        from c:/Ruby193/lib/ruby/1.9.1/webrick/httpserver.rb:45:in `initialize&amp;#39;
+        from c:/Ruby193/lib/ruby/gems/1.9.1/gems/rack-1.5.2/lib/rack/handler/webrick.rb:11:in `new&amp;#39;
+        from c:/Ruby193/lib/ruby/gems/1.9.1/gems/rack-1.5.2/lib/rack/handler/webrick.rb:11:in `run&amp;#39;
+        from c:/Ruby193/lib/ruby/gems/1.9.1/gems/rack-1.5.2/lib/rack/server.rb:264:in `start&amp;#39;
+        from c:/Ruby193/lib/ruby/gems/1.9.1/gems/rack-1.5.2/lib/rack/server.rb:141:in `start&amp;#39;
+        from c:/Ruby193/lib/ruby/gems/1.9.1/gems/rack-1.5.2/bin/rackup:4:in `&amp;lt;top (required)&amp;gt;&amp;#39;
+        from c:/Ruby193/bin/rackup:23:in `load&amp;#39;
+        from c:/Ruby193/bin/rackup:23:in `&amp;lt;main&amp;gt;&amp;#39;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Upon first glance, one might think I have a permissions issue on port 4000. I ensured nothing was currently running on port 4000 and that the Ruby application had permissions to use ports. Still nothing. Like any millennial, I turned to Google. I searched every combination of &lt;code class=&quot;language-text&quot;&gt;TCP Error&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;Permission denied&lt;/code&gt;, and &lt;code class=&quot;language-text&quot;&gt;WEBrick&lt;/code&gt; I could think of. Found nothing that would fix my problem.&lt;/p&gt;
+&lt;p&gt;Then I ran across an &lt;a href=&quot;https://github.com/imathis/octopress/issues/1395&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;issue&lt;/a&gt; logged against Octopress with a &lt;a href=&quot;https://github.com/imathis/octopress/issues/1395#issuecomment-28758511&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;comment&lt;/a&gt; that gave me an idea. WEBrick was having issues, so I decided to give &apos;thin&apos; a chance. Maybe it would give a more descriptive error message or something to help me resolve this issue. It was quick an easy to install &apos;thin&apos;.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;$ gem install thin
+$ echo gem \&amp;quot;thin\&amp;quot; &amp;gt;&amp;gt; Gemfile
+$ bundle install&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;I was cautiously optimistic, but that would only be short lived. Another error message, one that sounded the same at that.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;Thin web server (v1.6.2 codename Doc Brown)
+Maximum connections set to 1024
+Listening on 0.0.0.0:4000, CTRL+C to stop
+c:/Ruby193/lib/ruby/gems/1.9.1/gems/eventmachine-1.0.3-x86-mingw32/lib/eventmachine.rb:526:in `start_tcp_server&amp;#39;: no acceptor (port is in use or requires root privileges) (RuntimeError)
+        from c:/Ruby193/lib/ruby/gems/1.9.1/gems/eventmachine-1.0.3-x86-mingw32/lib/eventmachine.rb:526:in `start_server&amp;#39;
+        from c:/Ruby193/lib/ruby/gems/1.9.1/gems/thin-1.6.2/lib/thin/backends/tcp_server.rb:16:in `connect&amp;#39;
+        from c:/Ruby193/lib/ruby/gems/1.9.1/gems/thin-1.6.2/lib/thin/backends/base.rb:63:in `block in start&amp;#39;
+        from c:/Ruby193/lib/ruby/gems/1.9.1/gems/eventmachine-1.0.3-x86-mingw32/lib/eventmachine.rb:187:in `call&amp;#39;
+        from c:/Ruby193/lib/ruby/gems/1.9.1/gems/eventmachine-1.0.3-x86-mingw32/lib/eventmachine.rb:187:in `run_machine&amp;#39;
+        from c:/Ruby193/lib/ruby/gems/1.9.1/gems/eventmachine-1.0.3-x86-mingw32/lib/eventmachine.rb:187:in `run&amp;#39;
+        from c:/Ruby193/lib/ruby/gems/1.9.1/gems/thin-1.6.2/lib/thin/backends/base.rb:73:in `start&amp;#39;
+        from c:/Ruby193/lib/ruby/gems/1.9.1/gems/thin-1.6.2/lib/thin/server.rb:162:in `start&amp;#39;
+        from c:/Ruby193/lib/ruby/gems/1.9.1/gems/rack-1.5.2/lib/rack/handler/thin.rb:16:in `run&amp;#39;
+        from c:/Ruby193/lib/ruby/gems/1.9.1/gems/rack-1.5.2/lib/rack/server.rb:264:in `start&amp;#39;
+        from c:/Ruby193/lib/ruby/gems/1.9.1/gems/rack-1.5.2/lib/rack/server.rb:141:in `start&amp;#39;
+        from c:/Ruby193/lib/ruby/gems/1.9.1/gems/rack-1.5.2/bin/rackup:4:in `&amp;lt;top (required)&amp;gt;&amp;#39;
+        from c:/Ruby193/bin/rackup:23:in `load&amp;#39;
+        from c:/Ruby193/bin/rackup:23:in `&amp;lt;main&amp;gt;&amp;#39;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Naturally, I went to Google yet again. This time searching for words in this error message -- &lt;code class=&quot;language-text&quot;&gt;start_tcp_server&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;no acceptor&lt;/code&gt;, and &lt;code class=&quot;language-text&quot;&gt;eventmachine.rb&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Still nothing to fix my issue. Maybe WEBrick or thin isn&apos;t the issue at all..&lt;/p&gt;
+&lt;p&gt;My next step was to dig into the &apos;Rakefile&apos; itself to see what exactly is going on inside &lt;code class=&quot;language-text&quot;&gt;rake preview&lt;/code&gt;. I looked at the preview section, but nothing stood out. After several minutes of looking elsewhere in the Rakefile, I found it.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;server_port     = &amp;quot;4000&amp;quot;      # port for preview server eg. localhost:4000&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;The only hunch I had about the issue was that something about port 4000 was giving me trouble. Why not try a different port? I updated the line:&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;server_port     = &amp;quot;3000&amp;quot;      # port for preview server eg. localhost:3000&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;After a &lt;code class=&quot;language-text&quot;&gt;rake generate&lt;/code&gt; and &lt;code class=&quot;language-text&quot;&gt;rake preview&lt;/code&gt; command, I was golden! All was well. Now I no longer have to deploy my site to test if a change is going to work!&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Regex Tip - Don't Capture Groups]]></title><description><![CDATA[Regular expressions can be super useful, but they can also be a bit of a pain to work with sometimes. Yesterday I learned about something pretty handy -- a way to tell the regular expression to not capture a group. I've been dealing with captured groups that I do not need captured for years now. Finally, I found an way to remove that nuisance.
+
+]]></description><link>https://spencerlynn.com/blogs/2014-06-10-regex-tip-dont-capture-groups/</link><guid isPermaLink="false">https://spencerlynn.com/blogs/2014-06-10-regex-tip-dont-capture-groups/</guid><pubDate>Tue, 10 Jun 2014 17:54:18 GMT</pubDate><content:encoded>&lt;p&gt;Regular expressions can be super useful, but they can also be a bit of a pain to work with sometimes. Yesterday I learned about something pretty handy -- a way to tell the regular expression to not capture a group. I&apos;ve been dealing with captured groups that I do not need captured for years now. Finally, I found an way to remove that nuisance.&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;p&gt;Let&apos;s begin by considering the following string with a label and a value separated by a colon. However, white space before and after the colon is optional.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;Some Header: Sample Value&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;We want to capture the header text and the value text -- in this example &quot;Some Header&quot; and &quot;Some Value&quot;.&lt;/p&gt;
+&lt;p&gt;So we begin by writing a regular expression&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;(.*)(\s*)?:(\s*)?(.*)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;This results in four groups&lt;sup id=&quot;fnref-1&quot;&gt;&lt;a href=&quot;#fn-1&quot; class=&quot;footnote-ref&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;Some Header&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;nil&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;Some Value&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;But really, we don&apos;t want to capture the optional white space. It just creates groups we do not want or care about. It may be a nuisance, but it is also a nuisance that we can circumvent. The &lt;code class=&quot;language-text&quot;&gt;?:&lt;/code&gt; option inside of a group tells the regex parser to not capture the group. How convenient! So now let&apos;s modify our regex.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;(.*)(?:\s*)?:(?:\s*)?(.*)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Now we have only the results we care about&lt;sup id=&quot;fnref-1&quot;&gt;&lt;a href=&quot;#fn-1&quot; class=&quot;footnote-ref&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;Some Header&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;Some Value&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This is a pretty convenient regex option that I plan on using often going forward.&lt;/p&gt;
+&lt;div class=&quot;footnotes&quot;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&quot;fn-1&quot;&gt;
+&lt;p&gt;Note: For simplicity I intentionally left out the actual first group in the result -- the full string.&lt;/p&gt;
+&lt;a href=&quot;#fnref-1&quot; class=&quot;footnote-backref&quot;&gt;↩&lt;/a&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Coming Soon]]></title><description><![CDATA[
+Coming soon to a browser near you!
+
+]]></description><link>https://spencerlynn.com/blogs/2014-06-05-coming-soon/</link><guid isPermaLink="false">https://spencerlynn.com/blogs/2014-06-05-coming-soon/</guid><pubDate>Thu, 05 Jun 2014 17:22:38 GMT</pubDate><content:encoded>&lt;p&gt;Coming soon to a browser near you!&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;p&gt;Big thanks to &lt;a href=&quot;https://github.com/JoeRobich&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Joey Robichaud&lt;/a&gt; for the help getting this blog going!&lt;/p&gt;</content:encoded></item></channel></rss>
