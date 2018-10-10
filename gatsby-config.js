@@ -5,7 +5,9 @@ const pathPrefix = config.pathPrefix === '/' ? '' : config.pathPrefix;
 module.exports = {
   pathPrefix: config.pathPrefix,
   siteMetadata: {
-    siteUrl: config.siteUrl + pathPrefix,
+    title: config.siteTitle,
+    description: config.siteDescription,
+    siteUrl: config.siteUrl + pathPrefix
   },
   plugins: [
     'gatsby-plugin-react-helmet',
@@ -14,26 +16,26 @@ module.exports = {
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'pages',
-        path: `${__dirname}/src/pages`,
-      },
+        path: `${__dirname}/src/pages`
+      }
     },
     {
       resolve: 'gatsby-transformer-remark',
       options: {
-        "excerpt_separator": `<!-- more -->`,
+        'excerpt_separator': `<!-- more -->`,
         plugins: [
           {
             resolve: 'gatsby-remark-external-links',
             options: {
               target: '_blank',
               rel: 'nofollow noopener noreferrer',
-            },
+            }
           },
           'gatsby-remark-prismjs',
           'gatsby-remark-autolink-headers',
           `gatsby-remark-images`
-        ],
-      },
+        ]
+      }
     },
     {
       resolve: 'gatsby-plugin-typography',
@@ -57,6 +59,9 @@ module.exports = {
       },
     },
     'gatsby-plugin-offline',
-    `gatsby-plugin-sharp`
+    `gatsby-plugin-sharp`,
+    {
+      resolve: 'gatsby-plugin-feed'
+    }
   ]
 };

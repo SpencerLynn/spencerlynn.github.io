@@ -40,7 +40,7 @@ export const IndexQuery = graphql`
             title
             date(formatString: "MMMM DD, YYYY")
           }
-          excerpt(pruneLength: 200)
+          excerpt
         }
       }
     }
