@@ -2,12 +2,12 @@ import React from 'react';
 import { graphql } from 'gatsby';
 import styled, { injectGlobal } from 'styled-components';
 
+import { Content, Layout, Subline } from 'components';
 import theme from '../../config/Theme';
 
 // Needed to show line numbers for code snippets.
-import * as LineStyles from "prismjs/plugins/line-numbers/prism-line-numbers.css";
-
-import { Content, Layout, Subline } from 'components';
+// eslint-disable-next-line no-unused-vars
+import * as LineStyles from 'prismjs/plugins/line-numbers/prism-line-numbers.css';
 
 injectGlobal`
   /**
@@ -26,7 +26,7 @@ injectGlobal`
    * Remove the default PrismJS theme background-color, border-radius, margin,
    * padding and overflow.
    */
-  .gatsby-highlight pre[class*="language-"] {
+  .gatsby-highlight pre[class*='language-'] {
     background-color: transparent;
     margin: 0;
     padding: 0;
@@ -34,14 +34,14 @@ injectGlobal`
     float: left;
     min-width: 100%;
   }
-  .gatsby-highlight pre[class*="language-"].line-numbers {
+  .gatsby-highlight pre[class*='language-'].line-numbers {
     padding-left: 2.8em;
   }
 
   /**
    * Background color for inline code
    */
-  code[class*="language-"] {
+  code[class*='language-'] {
     background-color: #fdf6e3;
     padding: 0.3em;
     border-radius: 0.3em;
@@ -53,7 +53,7 @@ injectGlobal`
       opacity: 0.75;
     }
   }
-`
+`;
 
 const PostContent = styled.div`
   margin-top: 2rem;

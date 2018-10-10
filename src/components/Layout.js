@@ -40,7 +40,7 @@ injectGlobal`
   }
 
   blockquote:before {
-    content: "";
+    content: '';
     position: absolute;
     background: ${theme.colors.primary};
     height: 100%;
@@ -72,8 +72,8 @@ const Footer = styled.footer`
 
 const TwitterLink = () => (
   <a
-    href={"https://twitter.com/LSpencerLynn"}
-    target={"_blank"}
+    href={'https://twitter.com/LSpencerLynn'}
+    target={'_blank'}
     style={{ boxShadow: 'none', marginLeft: 20 }}
   >
     <img
@@ -86,8 +86,8 @@ const TwitterLink = () => (
 
 const GitHubLink = () => (
   <a
-    href={"https://github.com/SpencerLynn"}
-    target={"_blank"}
+    href={'https://github.com/SpencerLynn'}
+    target={'_blank'}
     style={{ boxShadow: 'none', marginLeft: 5 }}
   >
     <img
@@ -126,13 +126,13 @@ const Layout = ({ children }) => (
         <Helmet title={config.siteTitle} />
         <Header>
           <HeaderRow>
-            <Link to="/">{config.siteTitle}</Link>
+            <Link to={'/'}>{config.siteTitle}</Link>
             <TwitterLink />
             <GitHubLink />
             <LinksContainer>
               <EmptySpace />
-              <NavigationLink to="/" >Blogs</NavigationLink>
-              <NavigationLink to="/about" >About</NavigationLink>
+              <NavigationLink to={'/'} >Blogs</NavigationLink>
+              <NavigationLink to={'/about'} >About</NavigationLink>
             </LinksContainer>
           </HeaderRow>
         </Header>
