@@ -140,7 +140,7 @@ const Layout = ({ children }) => (
       </Wrapper>
 
       <Footer>
-        &copy; 2018 by Spencer Lynn. All rights reserved. <br />
+        &copy; 2022 by Spencer Lynn. All rights reserved. <br />
       </Footer>
     </React.Fragment>
   </ThemeProvider>
