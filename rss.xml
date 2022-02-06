@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Spencer Lynn]]></title><description><![CDATA[This is a thing...]]></description><link>https://spencerlynn.com</link><generator>RSS for Node</generator><lastBuildDate>Wed, 10 Oct 2018 04:47:16 GMT</lastBuildDate><item><title><![CDATA[Using MVC Route Constraints]]></title><description><![CDATA[A recent work project needed the ability to "turn on and off" MVC routes dynamically, depending on the user that was logged into the system. However, I didn't want to update all the existing controllers to handle the logic in each action. Furthermore, I didn't want any new controllers/actions to need to know about this logic.
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Spencer Lynn]]></title><description><![CDATA[This is a thing...]]></description><link>https://spencerlynn.com</link><generator>RSS for Node</generator><lastBuildDate>Sun, 06 Feb 2022 21:53:04 GMT</lastBuildDate><item><title><![CDATA[Using MVC Route Constraints]]></title><description><![CDATA[A recent work project needed the ability to "turn on and off" MVC routes dynamically, depending on the user that was logged into the system. However, I didn't want to update all the existing controllers to handle the logic in each action. Furthermore, I didn't want any new controllers/actions to need to know about this logic.
 
 I did some research and tried a few strategies. Then [Josh Rogers](http://joshuarogers.net) mentioned `IRouteConstraint`.
 
@@ -112,7 +112,7 @@ Once upon a time, I set up Google Analytics on a couple websites. The immediate 
   
   &lt;span
     class=&quot;gatsby-resp-image-wrapper&quot;
-    style=&quot;position: relative; display: block; ; max-width: 650px; margin-left: auto; margin-right: auto;&quot;
+    style=&quot;position: relative; display: block;  max-width: 650px; margin-left: auto; margin-right: auto;&quot;
   &gt;
     &lt;span
       class=&quot;gatsby-resp-image-background-image&quot;
@@ -149,7 +149,7 @@ Once upon a time, I set up Google Analytics on a couple websites. The immediate 
   
   &lt;span
     class=&quot;gatsby-resp-image-wrapper&quot;
-    style=&quot;position: relative; display: block; ; max-width: 650px; margin-left: auto; margin-right: auto;&quot;
+    style=&quot;position: relative; display: block;  max-width: 650px; margin-left: auto; margin-right: auto;&quot;
   &gt;
     &lt;span
       class=&quot;gatsby-resp-image-background-image&quot;
