@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Spencer Lynn]]></title><description><![CDATA[This is a thing...]]></description><link>https://spencerlynn.com</link><generator>RSS for Node</generator><lastBuildDate>Sun, 06 Feb 2022 21:53:04 GMT</lastBuildDate><item><title><![CDATA[Using MVC Route Constraints]]></title><description><![CDATA[A recent work project needed the ability to "turn on and off" MVC routes dynamically, depending on the user that was logged into the system. However, I didn't want to update all the existing controllers to handle the logic in each action. Furthermore, I didn't want any new controllers/actions to need to know about this logic.
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Spencer Lynn]]></title><description><![CDATA[This is a thing...]]></description><link>https://spencerlynn.com</link><generator>RSS for Node</generator><lastBuildDate>Thu, 21 Sep 2023 20:04:58 GMT</lastBuildDate><item><title><![CDATA[Using MVC Route Constraints]]></title><description><![CDATA[A recent work project needed the ability to "turn on and off" MVC routes dynamically, depending on the user that was logged into the system. However, I didn't want to update all the existing controllers to handle the logic in each action. Furthermore, I didn't want any new controllers/actions to need to know about this logic.
 
 I did some research and tried a few strategies. Then [Josh Rogers](http://joshuarogers.net) mentioned `IRouteConstraint`.
 
-]]></description><link>https://spencerlynn.com/blogs/2015-03-09-using-mvc-route-constraints/</link><guid isPermaLink="false">https://spencerlynn.com/blogs/2015-03-09-using-mvc-route-constraints/</guid><pubDate>Mon, 09 Mar 2015 18:09:42 GMT</pubDate><content:encoded>&lt;p&gt;A recent work project needed the ability to &quot;turn on and off&quot; MVC routes dynamically, depending on the user that was logged into the system. However, I didn&apos;t want to update all the existing controllers to handle the logic in each action. Furthermore, I didn&apos;t want any new controllers/actions to need to know about this logic.&lt;/p&gt;
+]]></description><link>https://spencerlynn.com/blogs/2015-03-09-using-mvc-route-constraints/</link><guid isPermaLink="false">https://spencerlynn.com/blogs/2015-03-09-using-mvc-route-constraints/</guid><pubDate>Mon, 09 Mar 2015 16:09:42 GMT</pubDate><content:encoded>&lt;p&gt;A recent work project needed the ability to &quot;turn on and off&quot; MVC routes dynamically, depending on the user that was logged into the system. However, I didn&apos;t want to update all the existing controllers to handle the logic in each action. Furthermore, I didn&apos;t want any new controllers/actions to need to know about this logic.&lt;/p&gt;
 &lt;p&gt;I did some research and tried a few strategies. Then &lt;a href=&quot;http://joshuarogers.net&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Josh Rogers&lt;/a&gt; mentioned &lt;code class=&quot;language-text&quot;&gt;IRouteConstraint&lt;/code&gt;.&lt;/p&gt;
 &lt;!-- more --&gt;
 &lt;p&gt;The &lt;code class=&quot;language-text&quot;&gt;IRouteConstraint&lt;/code&gt; interface only has one method to implement: &lt;code class=&quot;language-text&quot;&gt;Match&lt;/code&gt;. We&apos;ll add a class to handle this constraint.&lt;/p&gt;
@@ -94,7 +94,7 @@ public class MyApplication : HttpApplication
 
 Once upon a time, I set up Google Analytics on a couple websites. The immediate results were actually really neat. I could see that people were visiting the sites.
 
-]]></description><link>https://spencerlynn.com/blogs/2014-09-30-robot-attack-adventures-in-google-analytics/</link><guid isPermaLink="false">https://spencerlynn.com/blogs/2014-09-30-robot-attack-adventures-in-google-analytics/</guid><pubDate>Tue, 30 Sep 2014 17:00:05 GMT</pubDate><content:encoded>&lt;p&gt;It&apos;s been a while since I&apos;ve posted. I&apos;m not sure if anyone even reads my posts anyway... If only there were a way to see if anyone reads them... Which reminds me...&lt;/p&gt;
+]]></description><link>https://spencerlynn.com/blogs/2014-09-30-robot-attack-adventures-in-google-analytics/</link><guid isPermaLink="false">https://spencerlynn.com/blogs/2014-09-30-robot-attack-adventures-in-google-analytics/</guid><pubDate>Tue, 30 Sep 2014 15:00:05 GMT</pubDate><content:encoded>&lt;p&gt;It&apos;s been a while since I&apos;ve posted. I&apos;m not sure if anyone even reads my posts anyway... If only there were a way to see if anyone reads them... Which reminds me...&lt;/p&gt;
 &lt;p&gt;Once upon a time, I set up Google Analytics on a couple websites. The immediate results were actually really neat. I could see that people were visiting the sites.&lt;/p&gt;
 &lt;!-- more --&gt;
 &lt;p&gt;Well, it was all really neat until I really dug into the details. Then I noticed something that I thought was odd. Most of the hits were from Brazil; in fact, nearly 50% of the hits were from Brazil. ON BOTH SITES. Two independent sites. Both with similar results. Why are there so many views from Brazil. One of the sites is for an application I have that is for retiring United States Military service members. Why would someone in Brazil care about that?&lt;/p&gt;
@@ -112,7 +112,7 @@ Once upon a time, I set up Google Analytics on a couple websites. The immediate 
   
   &lt;span
     class=&quot;gatsby-resp-image-wrapper&quot;
-    style=&quot;position: relative; display: block;  max-width: 650px; margin-left: auto; margin-right: auto;&quot;
+    style=&quot;position: relative; display: block; ; max-width: 650px; margin-left: auto; margin-right: auto;&quot;
   &gt;
     &lt;span
       class=&quot;gatsby-resp-image-background-image&quot;
@@ -149,7 +149,7 @@ Once upon a time, I set up Google Analytics on a couple websites. The immediate 
   
   &lt;span
     class=&quot;gatsby-resp-image-wrapper&quot;
-    style=&quot;position: relative; display: block;  max-width: 650px; margin-left: auto; margin-right: auto;&quot;
+    style=&quot;position: relative; display: block; ; max-width: 650px; margin-left: auto; margin-right: auto;&quot;
   &gt;
     &lt;span
       class=&quot;gatsby-resp-image-background-image&quot;
@@ -183,7 +183,7 @@ Once upon a time, I set up Google Analytics on a couple websites. The immediate 
 &lt;/ol&gt;
 &lt;/div&gt;</content:encoded></item><item><title><![CDATA[Exploring a Switch Statement Alternative]]></title><description><![CDATA[I ran across this [article](http://www.codeproject.com/Tips/798140/Switch-statement-alternative) on an alternative to switch statements. Basically it was using a look-up table rather than a switch statement.
 
-]]></description><link>https://spencerlynn.com/blogs/2014-07-18-exploring-a-switch-statement-alternative/</link><guid isPermaLink="false">https://spencerlynn.com/blogs/2014-07-18-exploring-a-switch-statement-alternative/</guid><pubDate>Fri, 18 Jul 2014 19:54:42 GMT</pubDate><content:encoded>&lt;p&gt;I ran across this &lt;a href=&quot;http://www.codeproject.com/Tips/798140/Switch-statement-alternative&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;article&lt;/a&gt; on an alternative to switch statements. Basically it was using a look-up table rather than a switch statement.&lt;/p&gt;
+]]></description><link>https://spencerlynn.com/blogs/2014-07-18-exploring-a-switch-statement-alternative/</link><guid isPermaLink="false">https://spencerlynn.com/blogs/2014-07-18-exploring-a-switch-statement-alternative/</guid><pubDate>Fri, 18 Jul 2014 17:54:42 GMT</pubDate><content:encoded>&lt;p&gt;I ran across this &lt;a href=&quot;http://www.codeproject.com/Tips/798140/Switch-statement-alternative&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;article&lt;/a&gt; on an alternative to switch statements. Basically it was using a look-up table rather than a switch statement.&lt;/p&gt;
 &lt;!-- more --&gt;
 &lt;p&gt;The first example used the following:&lt;/p&gt;
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;c#&quot;&gt;&lt;pre style=&quot;counter-reset: linenumber 0&quot; class=&quot;language-c# line-numbers&quot;&gt;&lt;code class=&quot;language-c#&quot;&gt;var myNum = 12;
@@ -306,7 +306,7 @@ public class Swictionary&amp;lt;TKey, TValue&amp;gt;
 
 In my case, it concerned this blog itself. I was having an error while attempting to preview my site with `rake preview`.
 
-]]></description><link>https://spencerlynn.com/blogs/2014-06-18-resolving-tcp-error-in-octopress-preview/</link><guid isPermaLink="false">https://spencerlynn.com/blogs/2014-06-18-resolving-tcp-error-in-octopress-preview/</guid><pubDate>Wed, 18 Jun 2014 22:13:36 GMT</pubDate><content:encoded>&lt;p&gt;Not all error messages are very helpful. Usually, the less descriptive an error message is, the longer it takes to track down the issue.&lt;/p&gt;
+]]></description><link>https://spencerlynn.com/blogs/2014-06-18-resolving-tcp-error-in-octopress-preview/</link><guid isPermaLink="false">https://spencerlynn.com/blogs/2014-06-18-resolving-tcp-error-in-octopress-preview/</guid><pubDate>Wed, 18 Jun 2014 20:13:36 GMT</pubDate><content:encoded>&lt;p&gt;Not all error messages are very helpful. Usually, the less descriptive an error message is, the longer it takes to track down the issue.&lt;/p&gt;
 &lt;p&gt;In my case, it concerned this blog itself. I was having an error while attempting to preview my site with &lt;code class=&quot;language-text&quot;&gt;rake preview&lt;/code&gt;.&lt;/p&gt;
 &lt;!-- more --&gt;
 &lt;p&gt;The error message:&lt;/p&gt;
@@ -361,7 +361,7 @@ c:/Ruby193/lib/ruby/gems/1.9.1/gems/eventmachine-1.0.3-x86-mingw32/lib/eventmach
 &lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;server_port     = &amp;quot;3000&amp;quot;      # port for preview server eg. localhost:3000&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;After a &lt;code class=&quot;language-text&quot;&gt;rake generate&lt;/code&gt; and &lt;code class=&quot;language-text&quot;&gt;rake preview&lt;/code&gt; command, I was golden! All was well. Now I no longer have to deploy my site to test if a change is going to work!&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Regex Tip - Don't Capture Groups]]></title><description><![CDATA[Regular expressions can be super useful, but they can also be a bit of a pain to work with sometimes. Yesterday I learned about something pretty handy -- a way to tell the regular expression to not capture a group. I've been dealing with captured groups that I do not need captured for years now. Finally, I found an way to remove that nuisance.
 
-]]></description><link>https://spencerlynn.com/blogs/2014-06-10-regex-tip-dont-capture-groups/</link><guid isPermaLink="false">https://spencerlynn.com/blogs/2014-06-10-regex-tip-dont-capture-groups/</guid><pubDate>Tue, 10 Jun 2014 17:54:18 GMT</pubDate><content:encoded>&lt;p&gt;Regular expressions can be super useful, but they can also be a bit of a pain to work with sometimes. Yesterday I learned about something pretty handy -- a way to tell the regular expression to not capture a group. I&apos;ve been dealing with captured groups that I do not need captured for years now. Finally, I found an way to remove that nuisance.&lt;/p&gt;
+]]></description><link>https://spencerlynn.com/blogs/2014-06-10-regex-tip-dont-capture-groups/</link><guid isPermaLink="false">https://spencerlynn.com/blogs/2014-06-10-regex-tip-dont-capture-groups/</guid><pubDate>Tue, 10 Jun 2014 15:54:18 GMT</pubDate><content:encoded>&lt;p&gt;Regular expressions can be super useful, but they can also be a bit of a pain to work with sometimes. Yesterday I learned about something pretty handy -- a way to tell the regular expression to not capture a group. I&apos;ve been dealing with captured groups that I do not need captured for years now. Finally, I found an way to remove that nuisance.&lt;/p&gt;
 &lt;!-- more --&gt;
 &lt;p&gt;Let&apos;s begin by considering the following string with a label and a value separated by a colon. However, white space before and after the colon is optional.&lt;/p&gt;
 &lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;Some Header: Sample Value&lt;/code&gt;&lt;/p&gt;
@@ -394,6 +394,6 @@ c:/Ruby193/lib/ruby/gems/1.9.1/gems/eventmachine-1.0.3-x86-mingw32/lib/eventmach
 &lt;/div&gt;</content:encoded></item><item><title><![CDATA[Coming Soon]]></title><description><![CDATA[
 Coming soon to a browser near you!
 
-]]></description><link>https://spencerlynn.com/blogs/2014-06-05-coming-soon/</link><guid isPermaLink="false">https://spencerlynn.com/blogs/2014-06-05-coming-soon/</guid><pubDate>Thu, 05 Jun 2014 17:22:38 GMT</pubDate><content:encoded>&lt;p&gt;Coming soon to a browser near you!&lt;/p&gt;
+]]></description><link>https://spencerlynn.com/blogs/2014-06-05-coming-soon/</link><guid isPermaLink="false">https://spencerlynn.com/blogs/2014-06-05-coming-soon/</guid><pubDate>Thu, 05 Jun 2014 15:22:38 GMT</pubDate><content:encoded>&lt;p&gt;Coming soon to a browser near you!&lt;/p&gt;
 &lt;!-- more --&gt;
 &lt;p&gt;Big thanks to &lt;a href=&quot;https://github.com/JoeRobich&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Joey Robichaud&lt;/a&gt; for the help getting this blog going!&lt;/p&gt;</content:encoded></item></channel></rss>
