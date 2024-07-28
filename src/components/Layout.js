@@ -8,7 +8,6 @@ import { Wrapper, Header } from 'components';
 import theme from '../../config/Theme';
 import config from '../../config/SiteConfig';
 import { media } from '../utils/media';
-import twitterLogo from '../assets/Twitter_Social_Icon_Circle_White.png'
 import gitHubLogo from '../assets/GitHub-Mark-Light-120px-plus.png'
 
 injectGlobal`
@@ -70,20 +69,6 @@ const Footer = styled.footer`
   }
 `;
 
-const TwitterLink = () => (
-  <a
-    href={'https://twitter.com/LSpencerLynn'}
-    target={'_blank'}
-    style={{ boxShadow: 'none', marginLeft: 20 }}
-  >
-    <img
-      src={twitterLogo}
-      alt={'Twitter'}
-      style={{ width: 24, height: 24, marginBottom: 0 }}
-    />
-  </a>
-);
-
 const GitHubLink = () => (
   <a
     href={'https://github.com/SpencerLynn'}
@@ -127,11 +112,10 @@ const Layout = ({ children }) => (
         <Header>
           <HeaderRow>
             <Link to={'/'}>{config.siteTitle}</Link>
-            <TwitterLink />
             <GitHubLink />
             <LinksContainer>
               <EmptySpace />
-              <NavigationLink to={'/'} >Blogs</NavigationLink>
+              <NavigationLink to={'/'} >Home</NavigationLink>
               <NavigationLink to={'/about'} >About</NavigationLink>
             </LinksContainer>
           </HeaderRow>
@@ -140,7 +124,7 @@ const Layout = ({ children }) => (
       </Wrapper>
 
       <Footer>
-        &copy; 2022 by Spencer Lynn. All rights reserved. <br />
+        &copy; 2024 by Spencer Lynn. All rights reserved. <br />
       </Footer>
     </React.Fragment>
   </ThemeProvider>
